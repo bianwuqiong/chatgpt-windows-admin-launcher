@@ -1,94 +1,6 @@
 # ChatGPT Windows Admin Launcher / ChatGPT Windows 管理员启动器
 
-[English](#english) | [中文](#中文)
-
----
-
-## English
-
-### Overview
-
-ChatGPT Windows Admin Launcher is a small, auditable launcher for the Microsoft Store / MSIX ChatGPT desktop app (`OpenAI.Codex`). It starts the original app with an elevated Windows token, passes Chromium's `--do-not-de-elevate` switch, and verifies that the launched main process remains elevated.
-
-### Why this is needed
-
-On some Windows builds, Chromium may restart the ChatGPT main process with a standard token after it was launched from an elevated process. ChatGPT then appears to have been started as administrator while its local Codex command process still lacks administrator access.
-
-OpenAI's [Windows app documentation](https://learn.chatgpt.com/zh-Hans/docs/windows/windows-app) states that Codex inherits administrator rights when the ChatGPT desktop app itself is started as administrator. This launcher preserves that elevated launch on versions where Chromium's automatic de-elevation otherwise intervenes.
-
-`--do-not-de-elevate` is an implementation-level Chromium switch, not a documented OpenAI compatibility contract. The launcher checks the resulting process token and displays a persistent error if a future update changes the behavior.
-
-### Download and use
-
-1. Download `ChatGPT-Admin-Launcher-win-x64.exe` and `SHA256SUMS.txt` from the [latest GitHub Release](https://github.com/bianwuqiong/chatgpt-windows-admin-launcher/releases/latest).
-2. Exit every running ChatGPT desktop process normally.
-3. Double-click the launcher and approve the Windows UAC prompt.
-4. The launcher locates the newest installed x64 `OpenAI.Codex` package and starts its original `ChatGPT.exe`.
-
-The release binary is unsigned, so Windows displays an unknown publisher in UAC. Compare the executable's SHA-256 hash with `SHA256SUMS.txt` from the same Release.
-
-### Security properties
-
-- Requests standard UAC consent on every launch.
-- Does not create a scheduled task, service, startup entry, or UAC bypass.
-- Does not read credentials, contact the network, or collect telemetry.
-- Does not change `WindowsApps` permissions, environment variables, ChatGPT settings, or Codex sandbox settings.
-- Does not terminate an existing ChatGPT session. It asks the user to exit first.
-- Verifies the launched process token after Chromium has had time to complete its normal startup handoff.
-- Writes `ChatGPT-Admin-Launcher.log` to the desktop. The log contains timestamps, the installed package path, process IDs, and launch results; it contains no credentials.
-
-Running ChatGPT with an administrator token increases the impact of local commands that the user authorizes. Use this launcher only for tasks that require administrator access, and use the normal app launcher for ordinary work.
-
-See [SECURITY.md](SECURITY.md) for the detailed trust boundary.
-
-### Verify the result
-
-Ask Codex to run, or run in its terminal:
-
-```powershell
-$identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-$principal = [Security.Principal.WindowsPrincipal]::new($identity)
-[pscustomobject]@{
-    IsAdministrator = $principal.IsInRole(
-        [Security.Principal.WindowsBuiltInRole]::Administrator)
-    Integrity = (& "$env:SystemRoot\System32\whoami.exe" /groups |
-        Select-String 'S-1-16-12288').Line
-}
-```
-
-Expected result: `IsAdministrator` is `True`, and the integrity SID is `S-1-16-12288` (High).
-
-### Build from source
-
-Requirements: Windows x64 and the .NET 8 SDK.
-
-```powershell
-.\build.ps1
-```
-
-The single-file executable and checksum are written to `dist/`.
-
-Run the static security and privacy tests with:
-
-```powershell
-python -m unittest discover -s tests -v
-```
-
-### Compatibility
-
-The launcher has been tested with Windows 11 x64 and the Microsoft Store `OpenAI.Codex` package. Package versions are discovered dynamically and are not hard-coded. It currently expects the package family suffix `2p2nqsd0c76g0` and an `app\ChatGPT.exe` entry point.
-
-Future ChatGPT, Chromium, MSIX, or Windows updates may change the package layout or de-elevation behavior. The post-launch token check is designed to fail visibly rather than silently report success.
-
-### Related work
-
-- [Fightigertonight/Codex-Admin-Launcher](https://github.com/Fightigertonight/Codex-Admin-Launcher) is a more extensive PowerShell solution that also handles CLI relocation and package-context problems.
-- [moligod/Codex-APP-CLI-Administrator](https://github.com/moligod/Codex-APP-CLI-Administrator) documents elevated PowerShell and scheduled-task approaches.
-- [notyesbut/codex-desktop-autofix](https://github.com/notyesbut/codex-desktop-autofix) targets broader Codex Desktop MSIX repair scenarios.
-- [openai/codex#28107](https://github.com/openai/codex/issues/28107) describes the Windows auto-de-elevation symptom and an external launcher workaround.
-- Chromium and WebView2 also document the `do-not-de-elevate` switch in their Windows launch paths.
-
-This project is independent and is not affiliated with or endorsed by OpenAI.
+[中文](#中文) | [English](#english)
 
 ---
 
@@ -177,3 +89,91 @@ python -m unittest discover -s tests -v
 - Chromium 和 WebView2 的 Windows 启动路径中也有 `do-not-de-elevate` 参数的相关说明。
 
 本项目为独立社区项目，与 OpenAI 无隶属关系，也未获得 OpenAI 官方背书。
+
+---
+
+## English
+
+### Overview
+
+ChatGPT Windows Admin Launcher is a small, auditable launcher for the Microsoft Store / MSIX ChatGPT desktop app (`OpenAI.Codex`). It starts the original app with an elevated Windows token, passes Chromium's `--do-not-de-elevate` switch, and verifies that the launched main process remains elevated.
+
+### Why this is needed
+
+On some Windows builds, Chromium may restart the ChatGPT main process with a standard token after it was launched from an elevated process. ChatGPT then appears to have been started as administrator while its local Codex command process still lacks administrator access.
+
+OpenAI's [Windows app documentation](https://learn.chatgpt.com/zh-Hans/docs/windows/windows-app) states that Codex inherits administrator rights when the ChatGPT desktop app itself is started as administrator. This launcher preserves that elevated launch on versions where Chromium's automatic de-elevation otherwise intervenes.
+
+`--do-not-de-elevate` is an implementation-level Chromium switch, not a documented OpenAI compatibility contract. The launcher checks the resulting process token and displays a persistent error if a future update changes the behavior.
+
+### Download and use
+
+1. Download `ChatGPT-Admin-Launcher-win-x64.exe` and `SHA256SUMS.txt` from the [latest GitHub Release](https://github.com/bianwuqiong/chatgpt-windows-admin-launcher/releases/latest).
+2. Exit every running ChatGPT desktop process normally.
+3. Double-click the launcher and approve the Windows UAC prompt.
+4. The launcher locates the newest installed x64 `OpenAI.Codex` package and starts its original `ChatGPT.exe`.
+
+The release binary is unsigned, so Windows displays an unknown publisher in UAC. Compare the executable's SHA-256 hash with `SHA256SUMS.txt` from the same Release.
+
+### Security properties
+
+- Requests standard UAC consent on every launch.
+- Does not create a scheduled task, service, startup entry, or UAC bypass.
+- Does not read credentials, contact the network, or collect telemetry.
+- Does not change `WindowsApps` permissions, environment variables, ChatGPT settings, or Codex sandbox settings.
+- Does not terminate an existing ChatGPT session. It asks the user to exit first.
+- Verifies the launched process token after Chromium has had time to complete its normal startup handoff.
+- Writes `ChatGPT-Admin-Launcher.log` to the desktop. The log contains timestamps, the installed package path, process IDs, and launch results; it contains no credentials.
+
+Running ChatGPT with an administrator token increases the impact of local commands that the user authorizes. Use this launcher only for tasks that require administrator access, and use the normal app launcher for ordinary work.
+
+See [SECURITY.md](SECURITY.md) for the detailed trust boundary.
+
+### Verify the result
+
+Ask Codex to run, or run in its terminal:
+
+```powershell
+$identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+$principal = [Security.Principal.WindowsPrincipal]::new($identity)
+[pscustomobject]@{
+    IsAdministrator = $principal.IsInRole(
+        [Security.Principal.WindowsBuiltInRole]::Administrator)
+    Integrity = (& "$env:SystemRoot\System32\whoami.exe" /groups |
+        Select-String 'S-1-16-12288').Line
+}
+```
+
+Expected result: `IsAdministrator` is `True`, and the integrity SID is `S-1-16-12288` (High).
+
+### Build from source
+
+Requirements: Windows x64 and the .NET 8 SDK.
+
+```powershell
+.\build.ps1
+```
+
+The single-file executable and checksum are written to `dist/`.
+
+Run the static security and privacy tests with:
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+### Compatibility
+
+The launcher has been tested with Windows 11 x64 and the Microsoft Store `OpenAI.Codex` package. Package versions are discovered dynamically and are not hard-coded. It currently expects the package family suffix `2p2nqsd0c76g0` and an `app\ChatGPT.exe` entry point.
+
+Future ChatGPT, Chromium, MSIX, or Windows updates may change the package layout or de-elevation behavior. The post-launch token check is designed to fail visibly rather than silently report success.
+
+### Related work
+
+- [Fightigertonight/Codex-Admin-Launcher](https://github.com/Fightigertonight/Codex-Admin-Launcher) is a more extensive PowerShell solution that also handles CLI relocation and package-context problems.
+- [moligod/Codex-APP-CLI-Administrator](https://github.com/moligod/Codex-APP-CLI-Administrator) documents elevated PowerShell and scheduled-task approaches.
+- [notyesbut/codex-desktop-autofix](https://github.com/notyesbut/codex-desktop-autofix) targets broader Codex Desktop MSIX repair scenarios.
+- [openai/codex#28107](https://github.com/openai/codex/issues/28107) describes the Windows auto-de-elevation symptom and an external launcher workaround.
+- Chromium and WebView2 also document the `do-not-de-elevate` switch in their Windows launch paths.
+
+This project is independent and is not affiliated with or endorsed by OpenAI.
