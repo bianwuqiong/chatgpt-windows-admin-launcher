@@ -1,0 +1,28 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Run static safety tests
+        run: python -m unittest discover -s tests -v
+      - name: Build single-file launcher
+        shell: pwsh
+        run: ./build.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ChatGPT-Admin-Launcher-win-x64
+          path: |
+            dist/ChatGPT-Admin-Launcher-win-x64.exe
+            dist/SHA256SUMS.txt

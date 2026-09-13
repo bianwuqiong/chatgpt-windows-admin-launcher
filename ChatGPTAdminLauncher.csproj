@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>ChatGPTAdminLauncher</AssemblyName>
+    <Version>0.1.0</Version>
+    <Authors>biaowuqiong</Authors>
+    <Description>Launch the Microsoft Store ChatGPT desktop app with an elevated token on Windows.</Description>
+    <RepositoryUrl>https://github.com/biaowuqiong/chatgpt-windows-admin-launcher</RepositoryUrl>
+    <Deterministic>true</Deterministic>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+</Project>
