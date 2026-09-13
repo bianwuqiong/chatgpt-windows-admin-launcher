@@ -80,6 +80,10 @@ python -m unittest discover -s tests -v
 
 未来的 ChatGPT、Chromium、MSIX 或 Windows 更新可能改变软件包结构或自动降权行为。启动后的令牌检查会在不兼容时明确报错，避免产生“看似成功、实际未提权”的结果。
 
+### 支持项目
+
+本项目始终免费、开源。如果它帮助到了你，可以通过[支付宝、微信支付或 PayPal 自愿赞助后续维护](SUPPORT.md)。赞助不影响软件功能、授权或问题处理。
+
 ### 同类项目
 
 - [Fightigertonight/Codex-Admin-Launcher](https://github.com/Fightigertonight/Codex-Admin-Launcher)：功能更完整的 PowerShell 方案，还处理 CLI 搬运和软件包上下文问题。
@@ -167,6 +171,10 @@ python -m unittest discover -s tests -v
 The launcher has been tested with Windows 11 x64 and the Microsoft Store `OpenAI.Codex` package. Package versions are discovered dynamically and are not hard-coded. It currently expects the package family suffix `2p2nqsd0c76g0` and an `app\ChatGPT.exe` entry point.
 
 Future ChatGPT, Chromium, MSIX, or Windows updates may change the package layout or de-elevation behavior. The post-launch token check is designed to fail visibly rather than silently report success.
+
+### Support the project
+
+This project will remain free and open source. If it helped you, you may [voluntarily support continued maintenance through Alipay, WeChat Pay, or PayPal](SUPPORT.md). Sponsorship does not affect software functionality, licensing, or issue handling.
 
 ### Related work
 

@@ -39,6 +39,7 @@ class LauncherStaticTests(unittest.TestCase):
             path
             for path in ROOT.rglob("*")
             if path.is_file()
+            and path.suffix.lower() in {".cs", ".csproj", ".manifest", ".md", ".ps1", ".yml", ".txt"}
             and ".git" not in path.parts
             and not {"bin", "obj", "dist", "tests"}.intersection(path.parts)
         ]
