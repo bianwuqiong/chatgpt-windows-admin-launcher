@@ -20,7 +20,7 @@ OpenAI's [Windows app documentation](https://learn.chatgpt.com/zh-Hans/docs/wind
 
 ### Download and use
 
-1. Download `ChatGPT-Admin-Launcher-win-x64.exe` and `SHA256SUMS.txt` from the [latest GitHub Release](https://github.com/biaowuqiong/chatgpt-windows-admin-launcher/releases/latest).
+1. Download `ChatGPT-Admin-Launcher-win-x64.exe` and `SHA256SUMS.txt` from the [latest GitHub Release](https://github.com/bianwuqiong/chatgpt-windows-admin-launcher/releases/latest).
 2. Exit every running ChatGPT desktop process normally.
 3. Double-click the launcher and approve the Windows UAC prompt.
 4. The launcher locates the newest installed x64 `OpenAI.Codex` package and starts its original `ChatGPT.exe`.
@@ -108,7 +108,7 @@ OpenAI 的 [Windows 应用文档](https://learn.chatgpt.com/zh-Hans/docs/windows
 
 ### 下载与使用
 
-1. 从[最新 GitHub Release](https://github.com/biaowuqiong/chatgpt-windows-admin-launcher/releases/latest)下载 `ChatGPT-Admin-Launcher-win-x64.exe` 和 `SHA256SUMS.txt`。
+1. 从[最新 GitHub Release](https://github.com/bianwuqiong/chatgpt-windows-admin-launcher/releases/latest)下载 `ChatGPT-Admin-Launcher-win-x64.exe` 和 `SHA256SUMS.txt`。
 2. 正常退出所有正在运行的 ChatGPT 桌面进程。
 3. 双击启动器，并在 Windows UAC 窗口中选择“是”。
 4. 启动器会自动查找当前已安装的最新版 x64 `OpenAI.Codex` 软件包，并启动其中的原始 `ChatGPT.exe`。
